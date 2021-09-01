@@ -121,7 +121,7 @@ class RecipeView extends View {
      </div>
    </div>
 
-   <div class="recipe__user-generated${this._data.key ? '' : 'hidden'}">   
+   <div class="recipe__user-generated ${this._data.key ? '' : 'hidden'}">   
     <svg>
       <use href="${icon}#icon-user"></use>
     </svg>
@@ -169,7 +169,7 @@ class RecipeView extends View {
      <use href="${icon}#icon-check"></use>
    </svg>
    <div class="recipe__quantity">${
-     ing.quantity ? new numberToFraction(ing.quantity).toString() : ''
+     ing.quantity ? numberToFraction(ing.quantity).toString() : ''
    }</div>
    <div class="recipe__description">
      <span class="recipe__unit">${ing.unit}</span>
