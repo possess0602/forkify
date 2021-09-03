@@ -4,6 +4,7 @@ import icon from 'url:../../img/icons.svg'; //parcel2的寫法
 
 class AddRecipeView extends View {
   _parentElement = document.querySelector('.upload');
+
   _message = 'Recipe was successfully uploaded: )';
   _window = document.querySelector('.add-recipe-window');
   _overlay = document.querySelector('.overlay');
@@ -11,19 +12,41 @@ class AddRecipeView extends View {
   _btnClose = document.querySelector('.btn--close-modal');
   constructor() {
     super();
+    this._addHandlerHideMessageWindow();
     this._addHandlerShowWindow();
     this._addHandlerHideWindow();
   }
-  toggleWindow() {
+
+  // toggleMessageWindow() {
+  //   // this._messageElement.classList.toggle('hidden');
+
+  //   this._messageElement.classList.toggle('hidden');
+  //   this._messageOverlay.classList.toggle('hidden');
+  // }
+
+  // _addHandlerHideMessageWindow() {
+  //   this._messageOverlay.addEventListener(
+  //     'click',
+  //     this.toggleMessageWindow.bind(this)
+  //   );
+  //   this._btnMessageClose.addEventListener(
+  //     'click',
+  //     this.toggleMessageWindow.bind(this)
+  //   );
+  // }
+
+  toggleFormWindow() {
+    // this._messageElement.classList.toggle('hidden');
+
     this._window.classList.toggle('hidden');
     this._overlay.classList.toggle('hidden');
   }
   _addHandlerShowWindow() {
-    this._btnOpen.addEventListener('click', this.toggleWindow.bind(this));
+    this._btnOpen.addEventListener('click', this.toggleFormWindow.bind(this));
   }
   _addHandlerHideWindow() {
-    this._overlay.addEventListener('click', this.toggleWindow.bind(this));
-    this._btnClose.addEventListener('click', this.toggleWindow.bind(this));
+    this._overlay.addEventListener('click', this.toggleFormWindow.bind(this));
+    this._btnClose.addEventListener('click', this.toggleFormWindow.bind(this));
   }
   addHandlerUpload(handler) {
     this._parentElement.addEventListener('submit', function (e) {

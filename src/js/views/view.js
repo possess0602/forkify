@@ -4,6 +4,9 @@ import icon from 'url:../../img/icons.svg'; //parcel2的寫法
 
 export default class View {
   _data;
+  _messageElement = document.querySelector('.message-window');
+  _messageOverlay = document.querySelector('.overlay-message');
+  _btnMessageClose = document.querySelector('.btn--close-modal-meg');
 
   render(data, render = true) {
     if (!data || (Array.isArray(data) && data.length === 0))
@@ -63,6 +66,22 @@ export default class View {
   addHandlerRender(handler) {
     ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, handler));
   }
+  toggleMessageWindow() {
+    console.log(this);
+    this._messageElement.classList.toggle('hidden');
+    this._messageOverlay.classList.toggle('hidden');
+  }
+
+  _addHandlerHideMessageWindow() {
+    this._messageOverlay.addEventListener(
+      'click',
+      this.toggleMessageWindow.bind(this)
+    );
+    this._btnMessageClose.addEventListener(
+      'click',
+      this.toggleMessageWindow.bind(this)
+    );
+  }
   renderError(message = this._errorMessage) {
     const markup = `
     <div class="error">
@@ -73,20 +92,35 @@ export default class View {
       </div>
       <p>${message}</p>
     </div>`;
-    this._clear();
-    this._parentElement.insertAdjacentHTML('afterbegin', markup);
+    this.toggleMessageWindow();
+    this._messageElement.innerHTML = '';
+    this._messageElement.insertAdjacentHTML('afterbegin', markup);
   }
+  // renderMessage(message = this._message) {
+  //   const markup = `
+  //   <div class="message">
+  //     <div>
+  //       <svg>
+  //         <use href="${icon}#icon-alert-smile"></use>
+  //       </svg>
+  //     </div>
+  //     <p>${message}</p>
+  //   </div>`;
+  //   this._clear();
+  //   this._parentElement.insertAdjacentHTML('afterbegin', markup);
+  // }
   renderMessage(message = this._message) {
     const markup = `
-    <div class="message">
-      <div>
-        <svg>
+      <div class="message">
+        <div>
+         <svg>
           <use href="${icon}#icon-alert-smile"></use>
-        </svg>
-      </div>
-      <p>${message}</p>
-    </div>`;
-    this._clear();
-    this._parentElement.insertAdjacentHTML('afterbegin', markup);
+         </svg>         
+        </div>
+        <p>${message}</p>
+      </div>`;
+    this.toggleMessageWindow();
+    this._messageElement.innerHTML = '';
+    this._messageElement.insertAdjacentHTML('afterbegin', markup);
   }
 }

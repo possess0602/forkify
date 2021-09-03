@@ -9,6 +9,7 @@ import resultsView from './views/resultsView.js';
 import paginationView from './views/paginationView.js';
 import bookmarksView from './views/bookmarksView.js';
 import addRecipeView from './views/addRecipeView.js';
+import deleteView from './views/deleteView.js';
 
 // const recipeContainer = document.querySelector('.recipe');
 if (module.hot) {
@@ -79,13 +80,14 @@ const addBookmark = function () {
 const controlAddRecipe = async function (newRecipe) {
   try {
     // show loading spinner
-    addRecipeView.renderSpinner();
+    // addRecipeView.renderSpinner();
     await model.uploadRecipe(newRecipe);
     // 由於在model.js這個uploadRecipe()他是非同步的，如果沒有在這邊await他沒辦法reject，
     // 因此也就無法 renderError
 
     // render recipe
     recipeView.render(model.state.recipe);
+    addRecipeView.toggleFormWindow();
 
     // success message
     addRecipeView.renderMessage();
@@ -94,14 +96,22 @@ const controlAddRecipe = async function (newRecipe) {
 
     // change ID in URL
     window.history.pushState(null, '', `#${model.state.recipe.id}`);
+
     // close form windwow
     setTimeout(function () {
-      addRecipeView.toggleWindow();
+      // addRecipeView.toggleFormWindow();
     }, MODEL_CLOSE_SEC * 1000);
   } catch (err) {
     console.error(`💥`, err);
+    addRecipeView.toggleFormWindow();
     addRecipeView.renderError(err.message);
   }
+};
+const clearLocalstorage = function () {
+  model.clearBookmarks();
+  recipeView._clear();
+  window.history.pushState(null, '', ' ');
+  bookmarksView.render(model.state.bookmarks);
 };
 const init = function () {
   // 基於subscriber and publisher design pattern
@@ -115,6 +125,7 @@ const init = function () {
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
   addRecipeView.addHandlerUpload(controlAddRecipe);
+  deleteView.addHandlerClear(clearLocalstorage);
   // controlServings(); 如果簡單的把這放在那哩，會發現因為沒有考慮async 導致沒有任何state到達那個api，造成forEach undefined
 };
 init();

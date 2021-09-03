@@ -37,6 +37,12 @@
         <nav class="nav">
           <ul class="nav__list">
             <li class="nav__item">
+              <button class="nav__btn nav__btn--clear-recipe">
+                <!-- <img src="src/img/clear.png" alt="clear" /> -->
+                <span>clear recipe</span>
+              </button>
+            </li>
+            <li class="nav__item">
               <button class="nav__btn nav__btn--add-recipe">
                 <svg class="nav__icon">
                   <use href="src/img/icons.svg#icon-edit"></use>
@@ -255,7 +261,10 @@
         -->
       </div>
     </div>
-
+    <div class="overlay-message hidden"></div>
+    <div class="message-window hidden">
+      <button class="btn--close-modal-meg">&times;</button>
+    </div>
     <div class="overlay hidden"></div>
     <div class="add-recipe-window hidden">
       <button class="btn--close-modal">&times;</button>
