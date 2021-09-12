@@ -12,9 +12,9 @@ import addRecipeView from './views/addRecipeView.js';
 import deleteView from './views/deleteView.js';
 
 // const recipeContainer = document.querySelector('.recipe');
-if (module.hot) {
-  module.hot.accept();
-}
+// if (module.hot) {
+//   module.hot.accept();
+// }
 const controlRecipe = async function () {
   try {
     const id = window.location.hash.slice(1);
@@ -52,7 +52,6 @@ const controlSearchResults = async function () {
 };
 const controlPagination = function (gotoPage) {
   //  3) render NEW　results
-  console.log(gotoPage);
   resultsView.render(model.getSearchResultsPage(gotoPage));
 
   //  4) render NEW pagination
@@ -81,38 +80,47 @@ const controlAddRecipe = async function (newRecipe) {
   try {
     // show loading spinner
     // addRecipeView.renderSpinner();
+    // console.log(newRecipe);
     await model.uploadRecipe(newRecipe);
     // 由於在model.js這個uploadRecipe()他是非同步的，如果沒有在這邊await他沒辦法reject，
     // 因此也就無法 renderError
+    window.history.pushState(null, '', `#${model.state.recipe.id}`);
 
     // render recipe
     recipeView.render(model.state.recipe);
+    // open MessageCard
     addRecipeView.toggleFormWindow();
 
     // success message
     addRecipeView.renderMessage();
     // render bookmarks
     bookmarksView.render(model.state.bookmarks);
-
     // change ID in URL
-    window.history.pushState(null, '', `#${model.state.recipe.id}`);
 
     // close form windwow
     setTimeout(function () {
       // addRecipeView.toggleFormWindow();
+      addRecipeView.toggleMessageWindow();
     }, MODEL_CLOSE_SEC * 1000);
   } catch (err) {
     console.error(`💥`, err);
     addRecipeView.toggleFormWindow();
-    addRecipeView.renderError(err.message);
+    addRecipeView.renderMessage(err.message);
   }
 };
 const clearLocalstorage = function () {
   model.clearBookmarks();
+  if (model.state.bookmarks.length == 0) {
+    // recipeView.update(model.state.recipe);
+
+    //  3) render bookmarks
+    bookmarksView.render(model.state.bookmarks);
+  }
   recipeView._clear();
+
   window.history.pushState(null, '', ' ');
-  bookmarksView.render(model.state.bookmarks);
 };
+
 const init = function () {
   // 基於subscriber and publisher design pattern
   // view是永遠不知道controller地存在的，因此我們透過在controller丟給addHandlerRender，
@@ -126,6 +134,7 @@ const init = function () {
   paginationView.addHandlerClick(controlPagination);
   addRecipeView.addHandlerUpload(controlAddRecipe);
   deleteView.addHandlerClear(clearLocalstorage);
+
   // controlServings(); 如果簡單的把這放在那哩，會發現因為沒有考慮async 導致沒有任何state到達那個api，造成forEach undefined
 };
 init();

@@ -6,13 +6,21 @@ class BookmarksView extends View {
   _parentElement = document.querySelector('.bookmarks__list');
   _errorMessage = 'No bookmarks yet. Find good recipe and bookmark it ;)';
   _message = '';
-  // constructor() {
-  //   super();
-  //   this._addHandlerHideMessageWindow();
-  // }
-  addHandlerRender(handler) {
-    window.addEventListener('load', handler);
+  constructor() {
+    super();
+    // this._addHandlerHideMessageWindow();
   }
+  // addHandlerHideMessageWindow() {
+  //   this._messageOverlay.addEventListener(
+  //     'click',
+  //     this.toggleMessageWindow.bind(this)
+  //   );
+  //   this._btnMessageClose.addEventListener(
+  //     'click',
+  //     this.toggleMessageWindow.bind(this)
+  //   );
+  // }
+
   _generateMarkup() {
     return this._data
       .map(bookmark => previewView.render(bookmark, false))

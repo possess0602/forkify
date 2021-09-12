@@ -9,13 +9,11 @@ class PaginationView extends View {
       const btn = e.target.closest('.btn--inline');
       if (!btn) return;
       const gotoPage = +btn.dataset.goto;
-      console.log(gotoPage);
       handler(gotoPage);
     });
   }
   _generateMarkup() {
     const curPage = this._data.page;
-    console.log(`curPage ${curPage}`);
     const numPage = Math.ceil(
       this._data.results.length / this._data.resultsPerPage
     );

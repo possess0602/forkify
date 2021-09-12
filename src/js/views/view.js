@@ -9,19 +9,23 @@ export default class View {
   _btnMessageClose = document.querySelector('.btn--close-modal-meg');
 
   render(data, render = true) {
+    // If false, create markup string instead of rendering to the DOM
+
     if (!data || (Array.isArray(data) && data.length === 0))
       return this.renderError();
 
     this._data = data;
+    // console.log(this._data);
     const markup = this._generateMarkup();
-
     if (!render) return markup;
 
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
   update(data) {
+    // console.log(data);
     this._data = data;
+
     // console.log(`update func ${this._data}`);
     const newMarkup = this._generateMarkup();
     const newDOM = document.createRange().createContextualFragment(newMarkup); //把newMarkup轉成字串去比較
@@ -64,24 +68,26 @@ export default class View {
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   };
   addHandlerRender(handler) {
-    ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, handler));
+    ['hashchange', 'load'].forEach(ev => {
+      return window.addEventListener(ev, handler);
+    });
   }
   toggleMessageWindow() {
-    console.log(this);
+    // console.log(this);
     this._messageElement.classList.toggle('hidden');
     this._messageOverlay.classList.toggle('hidden');
   }
+  // addHandlerHideMessageWindow() {
+  //   this._messageOverlay.addEventListener(
+  //     'click',
+  //     this.toggleMessageWindow.bind(this)
+  //   );
+  //   this._btnMessageClose.addEventListener(
+  //     'click',
+  //     this.toggleMessageWindow.bind(this)
+  //   );
+  // }
 
-  _addHandlerHideMessageWindow() {
-    this._messageOverlay.addEventListener(
-      'click',
-      this.toggleMessageWindow.bind(this)
-    );
-    this._btnMessageClose.addEventListener(
-      'click',
-      this.toggleMessageWindow.bind(this)
-    );
-  }
   renderError(message = this._errorMessage) {
     const markup = `
     <div class="error">
@@ -92,9 +98,9 @@ export default class View {
       </div>
       <p>${message}</p>
     </div>`;
-    this.toggleMessageWindow();
-    this._messageElement.innerHTML = '';
-    this._messageElement.insertAdjacentHTML('afterbegin', markup);
+    // this.toggleMessageWindow();
+    this._parentElement.innerHTML = '';
+    this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
   // renderMessage(message = this._message) {
   //   const markup = `

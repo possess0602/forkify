@@ -16,7 +16,6 @@ class AddRecipeView extends View {
     this._addHandlerShowWindow();
     this._addHandlerHideWindow();
   }
-
   // toggleMessageWindow() {
   //   // this._messageElement.classList.toggle('hidden');
 
@@ -24,16 +23,17 @@ class AddRecipeView extends View {
   //   this._messageOverlay.classList.toggle('hidden');
   // }
 
-  // _addHandlerHideMessageWindow() {
-  //   this._messageOverlay.addEventListener(
-  //     'click',
-  //     this.toggleMessageWindow.bind(this)
-  //   );
-  //   this._btnMessageClose.addEventListener(
-  //     'click',
-  //     this.toggleMessageWindow.bind(this)
-  //   );
-  // }
+  _addHandlerHideMessageWindow() {
+    //renderError也與其共用
+    this._messageOverlay.addEventListener(
+      'click',
+      this.toggleMessageWindow.bind(this)
+    );
+    this._btnMessageClose.addEventListener(
+      'click',
+      this.toggleMessageWindow.bind(this)
+    );
+  }
 
   toggleFormWindow() {
     // this._messageElement.classList.toggle('hidden');
